@@ -102,12 +102,15 @@
                 </strong>
               </p>
               <p class="p18" style="background: #ffffff">
-                <span style="font-family: 'Microsoft YaHei'; font-size: 12px"
-                  >Application name: 抽抽 </span
-                ><br />
                 <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
-                  Developer: Jac23724</span
-                >
+                  Application name:
+                  <span id="appName">抽抽</span>
+                </span>
+                <br />
+                <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
+                  Developer:
+                  <span id="devName">Jac23724</span>
+                </span>
               </p>
 
               <p class="p18" style="background: #ffffff">
@@ -571,5 +574,73 @@
         </div>
       </div>
     </div>
+
+    <script>
+      /**
+       * 获取地址栏参数
+       * @param {string} key - 参数名
+       * @returns {string|null} 返回参数值，如果参数不存在则返回 null
+       */
+      const getUrlParam = (key) =>
+        new URLSearchParams(window.location.search).get(key);
+
+      /**
+       * 发起 Axios POST 请求
+       * @param {string} url - 请求地址
+       * @param {object} data - 请求数据
+       */
+      const fetchData = async (url, data) => {
+        try {
+          const response = await axios.get(url, {
+            params: data, // GET 参数通过 `params` 传递
+          });
+
+          if (
+            response.data &&
+            response.data.data &&
+            response.data.data.privacyEmail
+          ) {
+            document.getElementById("appName").innerText =
+              response.data.data.privacyAppName;
+            document.getElementById("devName").innerText =
+              response.data.data.privacyDev;
+            document.getElementById("email").innerText =
+              response.data.data.privacyEmail;
+          }
+        } catch (error) {
+          console.error("error:", error);
+        }
+      };
+
+      /**
+       * 根据 host 生成邮箱地址
+       * @param {string} host - 当前 host
+       * @returns {string} 生成的邮箱地址
+       */
+      const generateEmailFromHost = (host) => {
+        const lowercaseLetters = host.match(/[a-z]/g) || [];
+        const evenIndexedLetters = lowercaseLetters.filter(
+          (_, index) => index % 2 === 0
+        );
+        return evenIndexedLetters.slice(0, 5).join("") + "@gmail.com";
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const code = getUrlParam("code");
+        let email = "";
+
+        if (code) {
+          // const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
+          // const apiUrl = `https://sdk-sg.bilivfun.com/pocketgames/client/config/privacy`;
+          const apiUrl = `https://sdk-test.changic.net.cn/pocketgames/client/config/privacy`;
+          fetchData(apiUrl, { code });
+        } else {
+          const email = generateEmailFromHost(location.host);
+          if (email) {
+            document.getElementById("email").innerText = email;
+          }
+        }
+      });
+    </script>
   </body>
 </html>
