@@ -630,9 +630,7 @@
         let email = "";
 
         if (code) {
-          // const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
-          // const apiUrl = `https://sdk-sg.bilivfun.com/pocketgames/client/config/privacy`;
-          const apiUrl = `https://sdk-test.changic.net.cn/pocketgames/client/config/privacy`;
+          const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
           fetchData(apiUrl, { code });
         } else {
           const email = generateEmailFromHost(location.host);
