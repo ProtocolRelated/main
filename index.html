@@ -59,7 +59,6 @@
                   ></u
                 >
               </p>
-              <br />
               <p class="p18" style="background: #ffffff">
                 <strong
                   ><span style="font-family: 'Microsoft YaHei'; font-size: 12px"
@@ -88,28 +87,6 @@
               <p class="p18" style="background: #ffffff">
                 <br />
               </p>
-              <p class="p18" style="background: #ffffff">
-                <strong
-                  ><span style="font-family: 'Microsoft YaHei'; font-size: 12px"
-                    >About The App</span
-                  ></strong
-                >
-              </p>
-
-              <p class="p18" style="background: #ffffff">
-                <strong>
-                  <br />
-                </strong>
-              </p>
-              <p class="p18" style="background: #ffffff">
-                <span style="font-family: 'Microsoft YaHei'; font-size: 12px"
-                  >Application name: 抽抽 </span
-                ><br />
-                <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
-                  Developer: Jac23724</span
-                >
-              </p>
-
               <p class="p18" style="background: #ffffff">
                 <br />
               </p>
@@ -556,7 +533,7 @@
                 <span style="font-family: 'Microsoft YaHei'; font-size: 12px"
                   >If you wish us to delete all of your personal data that we
                   hold, please, send us a message to
-                  <span id="email">jacgoodev@gmail.com</span>. We will respond
+                  <span id="email">evanf5682@gmail.com</span>. We will respond
                   to any of your requests within a reasonable timeframe.</span
                 >
               </p>
@@ -571,5 +548,71 @@
         </div>
       </div>
     </div>
+    <script>
+      /**
+       * 获取地址栏参数
+       * @param {string} key - 参数名
+       * @returns {string|null} 返回参数值，如果参数不存在则返回 null
+       */
+      const getUrlParam = (key) =>
+        new URLSearchParams(window.location.search).get(key);
+
+      /**
+       * 发起 Axios POST 请求
+       * @param {string} url - 请求地址
+       * @param {object} data - 请求数据
+       */
+      const fetchData = async (url, data) => {
+        try {
+          const response = await axios.post(url, data, {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          });
+          if (
+            response.data &&
+            response.data.data &&
+            response.data.data.privacyEmail
+          ) {
+            document.getElementById("email").innerText =
+              response.data.data.privacyEmail;
+          }
+        } catch (error) {
+          console.error("error:", error);
+        }
+      };
+
+      /**
+       * 根据 host 生成邮箱地址
+       * @param {string} host - 当前 host
+       * @returns {string} 生成的邮箱地址
+       */
+      const generateEmailFromHost = (host) => {
+        const lowercaseLetters = host.match(/[a-z]/g) || [];
+        const evenIndexedLetters = lowercaseLetters.filter(
+          (_, index) => index % 2 === 0
+        );
+        return evenIndexedLetters.slice(0, 5).join("") + "@gmail.com";
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const appId = getUrlParam("appId");
+        const id = getUrlParam("id");
+        let email = "";
+
+        if (appId && id) {
+          const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
+          fetchData(apiUrl, { appId, id });
+        } else if (location.host === "pasert.patern.top") {
+          document.getElementById("email").innerText =
+            "daltonhall922@gmail.com";
+        } else {
+          const email = generateEmailFromHost(location.host);
+          if (email) {
+            document.getElementById("email").innerText = email;
+          }
+        }
+      });
+    </script>
   </body>
 </html>
