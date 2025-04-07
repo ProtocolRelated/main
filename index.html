@@ -88,34 +88,38 @@
               <p class="p18" style="background: #ffffff">
                 <br />
               </p>
-              <p class="p18" style="background: #ffffff">
-                <strong
-                  ><span style="font-family: 'Microsoft YaHei'; font-size: 12px"
-                    >About The App</span
-                  ></strong
-                >
-              </p>
+              <div id="aboutApp">
+                <p class="p18" style="background: #ffffff">
+                  <strong
+                    ><span
+                      style="font-family: 'Microsoft YaHei'; font-size: 12px"
+                      >About The App</span
+                    ></strong
+                  >
+                </p>
 
-              <p class="p18" style="background: #ffffff">
-                <strong>
+                <p class="p18" style="background: #ffffff">
+                  <strong>
+                    <br />
+                  </strong>
+                </p>
+                <p class="p18" style="background: #ffffff">
+                  <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
+                    Application name:
+                    <span id="appName">抽抽</span>
+                  </span>
                   <br />
-                </strong>
-              </p>
-              <p class="p18" style="background: #ffffff">
-                <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
-                  Application name:
-                  <span id="appName">抽抽</span>
-                </span>
-                <br />
-                <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
-                  Developer:
-                  <span id="devName">Jac23724</span>
-                </span>
-              </p>
+                  <span style="font-family: 'Microsoft YaHei'; font-size: 12px">
+                    Developer:
+                    <span id="devName">Jac23724</span>
+                  </span>
+                </p>
 
-              <p class="p18" style="background: #ffffff">
-                <br />
-              </p>
+                <p class="p18" style="background: #ffffff">
+                  <br />
+                </p>
+              </div>
+
               <p class="p18" style="background: #ffffff">
                 <strong
                   ><span style="font-family: 'Microsoft YaHei'; font-size: 12px"
@@ -630,9 +634,13 @@
         let email = "";
 
         if (code) {
-          const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
+          // const apiUrl = `${location.origin}/pocketgames/client/config/privacy`;
+          // const apiUrl = `https://sdk-sg.bilivfun.com/pocketgames/client/config/privacy`;
+          const apiUrl = `https://sdk-test.changic.net.cn/pocketgames/client/config/privacy`;
           fetchData(apiUrl, { code });
         } else {
+          document.getElementById("aboutApp").style.display = "none";
+
           const email = generateEmailFromHost(location.host);
           if (email) {
             document.getElementById("email").innerText = email;
